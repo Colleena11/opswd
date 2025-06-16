@@ -9,7 +9,8 @@ return new class extends Migration
     public function up(): void
 
 
-    {
+    {if (Schema::hasTable('logins')) return;
+
         Schema::create('logins', function (Blueprint $table) {
           $table->bigIncrements('login_id');
           $table->unsignedBigInteger('user_id');

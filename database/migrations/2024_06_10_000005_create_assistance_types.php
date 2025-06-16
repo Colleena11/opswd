@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
   Schema::create('assistance_types', function (Blueprint $table) {
-    $table->id(); // must be id(), not integer()
-    $table->string('assistance_type');
+    $table->bigIncrements('id'); // must match the foreign key type
+    $table->string('name');
     $table->timestamps();
 });
 

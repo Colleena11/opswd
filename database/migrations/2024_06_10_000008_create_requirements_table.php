@@ -6,23 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('requirements', function (Blueprint $table) {
-            $table->id();
-            $table->string('assistance_type')->unique();
+            $table->bigIncrements('id'); // requirement id
+            $table->unsignedBigInteger('assistance_type_id');
+            $table->string('requirement_name');
             $table->timestamps();
+
+            $table->foreign('assistance_type_id')->references('id')->on('assistance_types')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('assistance_types');
+        Schema::dropIfExists('requirements');
     }
 };

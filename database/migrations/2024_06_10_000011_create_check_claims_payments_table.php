@@ -11,23 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('check_claims_payments', function (Blueprint $table) {
-    $table->id();
-    $table->unsignedBigInteger('approved_claim_id');
-    $table->decimal('amount', 10, 2);
-    $table->string('check_number');
-    $table->date('payment_date');
-    $table->timestamps();
+        Schema::create('check_claims_payments', function (Blueprint $table) {
+            $table->bigIncrements('id'); // check claims payment id
+            $table->unsignedBigInteger('approved_claim_id');
+            $table->unsignedBigInteger('client_id');
+            $table->date('date_prepared');
+            $table->decimal('amount', 15, 2);
+            $table->string('check_number');
+            $table->date('date_claimed')->nullable();
+            $table->enum('status', ['pending', 'claimed', 'cancelled'])->default('pending');
+            $table->boolean('pending_due_to_payee_change')->default(false);
+            $table->timestamps();
 
-    // Foreign key
-    $table->foreign('approved_claim_id')
-          ->references('id')
-          ->on('approved_claims')
-          ->onDelete('cascade');
-});
-
-            
-       
+            $table->foreign('approved_claim_id')->references('id')->on('claims')->onDelete('cascade');
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+        });
     }
 
     /**
@@ -36,5 +34,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('check_claims_payments');
-    }
+    }       
 };
