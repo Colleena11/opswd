@@ -9,8 +9,5 @@ class Municipality extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        // add other relevant fields
-    ];
+    protected $fillable = ['name'];
 }

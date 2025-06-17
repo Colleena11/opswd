@@ -2,21 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
-class EmployeeController extends Controller
+class Controller extends BaseController
 {
-    public function index() { return Employee::all(); }
-    public function store(Request $request) { return Employee::create($request->all()); }
-    public function show($id) { return Employee::findOrFail($id); }
-    public function update(Request $request, $id) {
-        $employee = Employee::findOrFail($id);
-        $employee->update($request->all());
-        return $employee;
-    }
-    public function destroy($id) {
-        Employee::destroy($id);
-        return response()->noContent();
-    }
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

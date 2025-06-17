@@ -11,19 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create(table: 'clients', callback: function (Blueprint $table) :void {
-            $table->id();
-            $table->string('first name');
-            $table->string('middle name');
-            $table->string('last name');
+        Schema::create('clients', function (Blueprint $table): void {
+            $table->bigIncrements('id');
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
             $table->string('sex');
-            $table->integer('age') ->unsigned();
+            $table->integer('age')->unsigned();
             $table->string('address', 500); 
-            $table->integer('contact_number')->nullable();
+            $table->string('contact_number')->nullable();
             $table->string('valid_id')->unique();
-            $table->string('assessed_by');
+            $table->unsignedBigInteger('assessed_by')->nullable(); // FIXED: only this one remains
             $table->unsignedBigInteger('municipality_id');
             $table->foreign('municipality_id')->references('id')->on('municipalities')->onDelete('cascade');
+            // Optional FK for assessed_by
+            // $table->foreign('assessed_by')->references('user_id')->on('users')->onDelete('set null');
             $table->timestamps();     
         });
     }
